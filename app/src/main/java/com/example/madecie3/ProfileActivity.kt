@@ -9,14 +9,17 @@ import com.google.firebase.auth.FirebaseAuth
 class ProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        ThemeUtils.applyTheme(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
-        val nameText    = findViewById<TextView>(R.id.profileName)
-        val emailText   = findViewById<TextView>(R.id.profileEmail)
-        val logoutBtn   = findViewById<Button>(R.id.logoutBtn)
-        val auth        = FirebaseAuth.getInstance()
-        val currentUser = auth.currentUser
+        val nameText       = findViewById<TextView>(R.id.profileName)
+        val emailText      = findViewById<TextView>(R.id.profileEmail)
+        val avatarText     = findViewById<TextView>(R.id.profileAvatar)
+        val logoutBtn      = findViewById<Button>(R.id.logoutBtn)
+        val themeToggleBtn = findViewById<ImageButton>(R.id.themeToggleBtn)
+        val auth           = FirebaseAuth.getInstance()
+        val currentUser    = auth.currentUser
 
         if (currentUser == null) {
             startActivity(Intent(this, LoginActivity::class.java).apply {
@@ -26,18 +29,25 @@ class ProfileActivity : AppCompatActivity() {
             return
         }
 
-        nameText.text  = currentUser.displayName ?: "User"
-        emailText.text = currentUser.email ?: "No email"
+        val displayName = currentUser.displayName ?: "User"
+        nameText.text   = displayName
+        emailText.text  = currentUser.email ?: "No email"
+        avatarText.text = displayName.firstOrNull()?.uppercase() ?: "U"
 
-        // SharedPreferences Use #2: Cache Firebase profile data locally
+        // Cache profile data
         val prefs = getSharedPreferences("prefs", MODE_PRIVATE)
         prefs.edit()
-            .putString("cached_name",  currentUser.displayName ?: "User")
+            .putString("cached_name",  displayName)
             .putString("cached_email", currentUser.email ?: "No email")
             .apply()
 
+        // Theme toggle
+        themeToggleBtn.setOnClickListener {
+            ThemeUtils.toggleTheme(this)
+            recreate()
+        }
+
         logoutBtn.setOnClickListener {
-            // SharedPreferences Use #2: Clear local cache on logout
             getSharedPreferences("prefs", MODE_PRIVATE).edit().clear().apply()
             auth.signOut()
             startActivity(Intent(this, LoginActivity::class.java).apply {

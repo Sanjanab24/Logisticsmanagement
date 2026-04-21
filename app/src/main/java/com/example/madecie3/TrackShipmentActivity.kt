@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 class TrackShipmentActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        ThemeUtils.applyTheme(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_track_shipment)
 
@@ -19,6 +20,7 @@ class TrackShipmentActivity : AppCompatActivity() {
         val btn         = findViewById<Button>(R.id.trackBtn)
         val statusText  = findViewById<TextView>(R.id.statusText)
         val progressBar = findViewById<ProgressBar>(R.id.trackProgress)
+        val resultCard  = findViewById<LinearLayout>(R.id.trackResultCard)
 
         // SharedPreferences Use #3: Pre-fill the last searched tracking ID
         val prefs = getSharedPreferences("prefs", MODE_PRIVATE)
@@ -40,6 +42,7 @@ class TrackShipmentActivity : AppCompatActivity() {
             }
 
             progressBar.visibility = View.VISIBLE
+            resultCard.visibility = View.GONE
             statusText.text = ""
 
             lifecycleScope.launch {
@@ -61,8 +64,10 @@ class TrackShipmentActivity : AppCompatActivity() {
                             🏙️ Destination: Los Angeles
                             ⏱️ ETA: 3 business days
                         """.trimIndent()
+                        resultCard.visibility = View.VISIBLE
                     } else {
                         statusText.text = "No shipment found for ID $id.\nTry IDs between 1 and 20."
+                        resultCard.visibility = View.VISIBLE
                     }
                 } catch (e: Exception) {
                     statusText.text = "Network error: ${e.message}"

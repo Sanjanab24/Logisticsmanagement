@@ -1,23 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="12dp"
-    android:orientation="vertical"
-    android:background="#EEEEEE"
-    android:layout_margin="6dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/bg_card"
+    android:padding="16dp"
+    android:gravity="center_vertical"
+    android:layout_margin="6dp">
 
-    <TextView
-        android:id="@+id/orderId"
-        android:text="Tracking ID"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <!-- Red dot indicator -->
+    <View
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:background="@drawable/bg_button_red"
+        android:layout_marginEnd="14dp" />
 
-    <TextView
-        android:id="@+id/orderStatus"
-        android:text="Status"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"/>
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/orderId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Order #"
+            android:textStyle="bold"
+            android:textColor="@color/dark_text_primary"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/orderStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Status"
+            android:textColor="@color/dark_text_secondary"
+            android:textSize="13sp"
+            android:layout_marginTop="2dp" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="›"
+        android:textSize="22sp"
+        android:textColor="@color/dark_text_secondary" />
 
 </LinearLayout>

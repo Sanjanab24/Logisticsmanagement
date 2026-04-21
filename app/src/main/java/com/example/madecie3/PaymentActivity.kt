@@ -9,7 +9,11 @@ import androidx.lifecycle.lifecycleScope
 import com.example.madecie3.api.CartProduct
 import com.example.madecie3.api.PaymentRequest
 import com.example.madecie3.api.RetrofitClient
+import com.example.madecie3.data.AppDatabase
+import com.example.madecie3.data.ShipmentEntity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -59,6 +63,23 @@ class PaymentActivity : AppCompatActivity() {
                     if (response.isSuccessful && response.body() != null) {
                         // Build a unique tracking ID from the API response
                         val transactionId = "TRK${response.body()!!.id}${(1000..9999).random()}"
+
+                        // Save to Local Memory (Room) for AI context
+                        val db = AppDatabase.getDatabase(this@PaymentActivity)
+                        val shipment = ShipmentEntity(
+                            sender = intent.getStringExtra("sender") ?: "Unknown",
+                            receiver = intent.getStringExtra("receiver") ?: "Unknown",
+                            pickupAddress = intent.getStringExtra("pickup") ?: "N/A",
+                            deliveryAddress = intent.getStringExtra("delivery") ?: "N/A",
+                            weight = intent.getDoubleExtra("weight", 0.0),
+                            cost = amount,
+                            trackingId = transactionId,
+                            paymentMethod = selectedMethod
+                        )
+                        
+                        withContext(Dispatchers.IO) {
+                            db.shipmentDao().insertShipment(shipment)
+                        }
 
                         val intent = Intent(this@PaymentActivity, OrderConfirmationActivity::class.java)
                         intent.putExtra("trackingId", transactionId)
