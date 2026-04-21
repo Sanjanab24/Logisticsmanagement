@@ -1,15 +1,32 @@
 package com.example.madecie3
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class SignupActivity : AppCompatActivity() {
 
+    private val avatarPickerLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                val preview = findViewById<ImageView>(R.id.avatarPreview)
+                val placeholder = findViewById<LinearLayout>(R.id.avatarPlaceholder)
+                preview.setImageURI(it)
+                preview.visibility = View.VISIBLE
+                placeholder.visibility = View.GONE
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        ThemeUtils.applyTheme(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
 
@@ -19,9 +36,18 @@ class SignupActivity : AppCompatActivity() {
         val confirmPassword = findViewById<EditText>(R.id.confirmPassword)
         val registerBtn     = findViewById<Button>(R.id.registerBtn)
         val progressBar     = findViewById<ProgressBar>(R.id.signupProgress)
+        val avatarPickArea  = findViewById<FrameLayout>(R.id.avatarPickArea)
         val auth            = FirebaseAuth.getInstance()
 
+        avatarPickArea.setOnClickListener {
+            avatarPickerLauncher.launch("image/*")
+        }
+
         registerBtn.setOnClickListener {
+            if (!isNetworkAvailable()) {
+                Toast.makeText(this, "No internet connection detected", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
             val nameText    = name.text.toString().trim()
             val emailText   = email.text.toString().trim()
             val passText    = password.text.toString().trim()
@@ -48,9 +74,6 @@ class SignupActivity : AppCompatActivity() {
 
                         user?.updateProfile(profileUpdates)
                             ?.addOnCompleteListener { profileTask ->
-                                progressBar.visibility = View.GONE
-                                registerBtn.isEnabled = true
-                                
                                 if (profileTask.isSuccessful) {
                                     Toast.makeText(this@SignupActivity, "Account created!", Toast.LENGTH_SHORT).show()
                                     val intent = Intent(this@SignupActivity, DashboardActivity::class.java)
@@ -60,18 +83,22 @@ class SignupActivity : AppCompatActivity() {
                                 } else {
                                     val error = profileTask.exception?.localizedMessage ?: "Failed to set display name"
                                     Toast.makeText(this@SignupActivity, "Account created, but profile update failed: $error", Toast.LENGTH_LONG).show()
-                                    // Still navigate since account IS created
                                     startActivity(Intent(this@SignupActivity, DashboardActivity::class.java))
                                     finish()
                                 }
                             }
                     } else {
-                        progressBar.visibility = View.GONE
-                        registerBtn.isEnabled = true
                         val errorMessage = task.exception?.localizedMessage ?: "Signup failed. Try again."
                         Toast.makeText(this@SignupActivity, errorMessage, Toast.LENGTH_LONG).show()
                     }
                 }
         }
+    }
+
+    private fun isNetworkAvailable(): Boolean {
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 }

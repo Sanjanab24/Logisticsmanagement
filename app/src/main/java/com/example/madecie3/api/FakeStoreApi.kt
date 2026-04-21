@@ -41,6 +41,19 @@ data class LoginResponse(
     val token: String
 )
 
+data class PaymentRequest(
+    val userId: Int,
+    val date: String,
+    val products: List<CartProduct>
+)
+
+data class PaymentResponse(
+    val id: Int,
+    val userId: Int,
+    val date: String,
+    val products: List<CartProduct>
+)
+
 // ── API Interface ─────────────────────────────────────────────────────────────
 
 interface FakeStoreApi {
@@ -72,4 +85,8 @@ interface FakeStoreApi {
 
     @POST("users")
     suspend fun createUser(@Body user: Map<String, String>): Response<User>
+
+    // Payments (Simulated via Carts)
+    @POST("carts")
+    suspend fun simulatePayment(@Body request: PaymentRequest): Response<PaymentResponse>
 }

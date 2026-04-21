@@ -1,63 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/dark_bg"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="24dp"
+        android:gravity="center_horizontal">
 
-        <TextView
-            android:text="Create Shipment"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="16dp"
+        <!-- Back / Title row -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="28dp">
 
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Shipment"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dark_text_primary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fill in the details below"
+                    android:textSize="13sp"
+                    android:textColor="@color/dark_text_secondary" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Package image pick -->
+        <FrameLayout
+            android:id="@+id/packageImagePick"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:background="@drawable/bg_image_pick"
+            android:layout_marginBottom="28dp"
+            android:foreground="?attr/selectableItemBackgroundBorderless">
+
+            <ImageView
+                android:id="@+id/packageImagePreview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/packageImagePlaceholder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📸"
+                    android:textSize="32sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tap to upload package photo"
+                    android:textSize="13sp"
+                    android:textColor="@color/accent_red"
+                    android:layout_marginTop="6dp" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <!-- Sender -->
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="SENDER NAME" android:textSize="11sp" android:letterSpacing="0.1" android:textColor="@color/dark_text_secondary" android:layout_marginBottom="6dp" />
         <EditText
             android:id="@+id/sender"
-            android:hint="Sender Name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="56dp"
+            android:hint="e.g. John Doe"
+            android:background="@drawable/bg_input_field"
+            android:textColor="@color/dark_text_primary"
+            android:textColorHint="@color/dark_text_secondary"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginBottom="16dp" />
 
+        <!-- Receiver -->
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="RECEIVER NAME" android:textSize="11sp" android:letterSpacing="0.1" android:textColor="@color/dark_text_secondary" android:layout_marginBottom="6dp" />
         <EditText
             android:id="@+id/receiver"
-            android:hint="Receiver Name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"/>
+            android:layout_height="56dp"
+            android:hint="e.g. Jane Smith"
+            android:background="@drawable/bg_input_field"
+            android:textColor="@color/dark_text_primary"
+            android:textColorHint="@color/dark_text_secondary"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginBottom="16dp" />
 
+        <!-- Pickup -->
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="PICKUP ADDRESS" android:textSize="11sp" android:letterSpacing="0.1" android:textColor="@color/dark_text_secondary" android:layout_marginBottom="6dp" />
         <EditText
             android:id="@+id/pickup"
-            android:hint="Pickup Address"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"/>
+            android:layout_height="56dp"
+            android:hint="123 Main Street, City"
+            android:background="@drawable/bg_input_field"
+            android:textColor="@color/dark_text_primary"
+            android:textColorHint="@color/dark_text_secondary"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginBottom="16dp" />
 
+        <!-- Delivery -->
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="DELIVERY ADDRESS" android:textSize="11sp" android:letterSpacing="0.1" android:textColor="@color/dark_text_secondary" android:layout_marginBottom="6dp" />
         <EditText
             android:id="@+id/delivery"
-            android:hint="Delivery Address"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"/>
+            android:layout_height="56dp"
+            android:hint="456 Oak Avenue, City"
+            android:background="@drawable/bg_input_field"
+            android:textColor="@color/dark_text_primary"
+            android:textColorHint="@color/dark_text_secondary"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginBottom="16dp" />
 
+        <!-- Weight -->
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="WEIGHT (KG)" android:textSize="11sp" android:letterSpacing="0.1" android:textColor="@color/dark_text_secondary" android:layout_marginBottom="6dp" />
         <EditText
             android:id="@+id/weight"
-            android:hint="Weight (kg)"
-            android:inputType="numberDecimal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"/>
+            android:layout_height="56dp"
+            android:hint="e.g. 2.5"
+            android:inputType="numberDecimal"
+            android:background="@drawable/bg_input_field"
+            android:textColor="@color/dark_text_primary"
+            android:textColorHint="@color/dark_text_secondary"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginBottom="32dp" />
 
         <Button
             android:id="@+id/proceedPaymentBtn"
-            android:text="Proceed to Payment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"/>
+            android:layout_height="54dp"
+            android:text="PROCEED TO PAYMENT →"
+            android:textColor="@color/white"
+            android:letterSpacing="0.06"
+            android:textStyle="bold"
+            android:background="@drawable/bg_button_red"
+            android:layout_marginBottom="24dp" />
 
     </LinearLayout>
 </ScrollView>

@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 class OrderConfirmationActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        ThemeUtils.applyTheme(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order_confirmation)
 
@@ -20,9 +21,9 @@ class OrderConfirmationActivity : AppCompatActivity() {
         val amountPaidText    = findViewById<TextView>(R.id.amountPaidText)
         val homeBtn           = findViewById<Button>(R.id.homeBtn)
 
-        trackingText.text      = "Tracking ID: $trackingId"
-        paymentMethodText.text = "Payment Method: $paymentMethod"
-        amountPaidText.text    = "Amount Paid: ₹$amount"
+        trackingText.text      = trackingId
+        paymentMethodText.text = paymentMethod
+        amountPaidText.text    = "₹$amount"
 
         homeBtn.setOnClickListener {
             startActivity(Intent(this, DashboardActivity::class.java))

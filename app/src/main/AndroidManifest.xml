@@ -17,6 +17,11 @@
             android:name=".ProfileActivity"
             android:exported="false" />
         <activity
+            android:name=".AiAssistantActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".ShipmentDetailsActivity"
             android:exported="false" />
         <activity

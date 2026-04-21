@@ -44,28 +44,34 @@ class LoginActivity : AppCompatActivity() {
                 if (idToken.isNullOrEmpty()) {
                     setLoading(false)
                     Toast.makeText(this, "Google sign-in token missing. Ensure correct SHA-1 in Firebase.", Toast.LENGTH_LONG).show()
+                    Log.e("LoginActivity", "ID Token is null or empty. Account: ${account.email}")
                     return@registerForActivityResult
                 }
                 firebaseAuthWithGoogle(idToken)
             } catch (e: ApiException) {
                 setLoading(false)
-                val message = when (e.statusCode) {
-                    7 -> "Network error. Please check your internet connection."
-                    10 -> "Developer error (10). Check SHA-1 and package name in Firebase."
-                    12500 -> "Sign-in failed (12500). Ensure Google Play Services are up to date."
+                val statusMessage = when (e.statusCode) {
+                    7 -> "Connectivity error (7). Check emulator internet or Airplane mode."
+                    8 -> "Internal error (8). Try restarting the emulator."
+                    10 -> "Developer error (10). Verify SHA-1 and package name match exactly in Firebase."
+                    12500 -> "Sign-in failed (12500). Update Google Play Services."
                     12501 -> "Sign-in cancelled by user."
                     else -> "Google sign-in failed (${e.statusCode}): ${e.localizedMessage}"
                 }
-                Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-                android.util.Log.e("LoginActivity", "Google Sign-In failed", e)
+                Toast.makeText(this, statusMessage, Toast.LENGTH_LONG).show()
+                Log.e("LoginActivity", "Google Sign-In ApiException (Status: ${e.statusCode})", e)
+                if (e.statusCode == 7) {
+                    Log.d("LoginActivity", "Network available: ${isNetworkAvailable()}")
+                }
             }
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        ThemeUtils.applyTheme(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        logAppSignature() // Diagnostic task: check SHA-1 in Logcat
+        logAppSignature()
 
         auth = FirebaseAuth.getInstance()
         email = findViewById(R.id.email)
@@ -75,18 +81,21 @@ class LoginActivity : AppCompatActivity() {
         signupText = findViewById(R.id.signupText)
         progressBar = findViewById(R.id.loginProgress)
 
+        // Theme toggle
+        val themeToggleBtn = findViewById<ImageButton>(R.id.themeToggleBtn)
+        updateThemeToggleIcon(themeToggleBtn)
+        themeToggleBtn.setOnClickListener {
+            ThemeUtils.toggleTheme(this)
+            recreate()
+        }
+
         val webClientIdResId = resources.getIdentifier("default_web_client_id", "string", packageName)
         if (webClientIdResId == 0) {
             googleLoginBtn.isEnabled = false
-            Toast.makeText(
-                this,
-                "Google Sign-In not configured. Check google-services setup.",
-                Toast.LENGTH_LONG
-            ).show()
+            Toast.makeText(this, "Google Sign-In not configured. Check google-services setup.", Toast.LENGTH_LONG).show()
         } else {
             val webClientId = getString(webClientIdResId)
-            android.util.Log.d("LoginActivity", "Using Web Client ID: $webClientId")
-            
+            Log.d("LoginActivity", "Using Web Client ID: $webClientId")
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(webClientId)
                 .requestEmail()
@@ -97,16 +106,12 @@ class LoginActivity : AppCompatActivity() {
         loginBtn.setOnClickListener {
             val emailText = email.text.toString().trim()
             val passText  = password.text.toString().trim()
-
             if (emailText.isEmpty()) { email.error = "Enter email"; return@setOnClickListener }
             if (passText.isEmpty())  { password.error = "Enter password"; return@setOnClickListener }
-
             setLoading(true)
-
             auth.signInWithEmailAndPassword(emailText, passText)
                 .addOnCompleteListener(this) { task ->
                     setLoading(false)
-
                     if (task.isSuccessful) {
                         Toast.makeText(this@LoginActivity, "Login successful!", Toast.LENGTH_SHORT).show()
                         startActivity(Intent(this@LoginActivity, DashboardActivity::class.java))
@@ -133,6 +138,14 @@ class LoginActivity : AppCompatActivity() {
 
         signupText.setOnClickListener {
             startActivity(Intent(this, SignupActivity::class.java))
+        }
+    }
+
+    private fun updateThemeToggleIcon(btn: ImageButton) {
+        if (ThemeUtils.isDark(this)) {
+            btn.setImageResource(android.R.drawable.ic_menu_day)
+        } else {
+            btn.setImageResource(android.R.drawable.ic_menu_day)
         }
     }
 
@@ -174,14 +187,12 @@ class LoginActivity : AppCompatActivity() {
                 @Suppress("DEPRECATION")
                 packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
             }
-
             val signatures = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 packageInfo.signingInfo?.signingCertificateHistory
             } else {
                 @Suppress("DEPRECATION")
                 packageInfo.signatures
             }
-
             signatures?.forEach { signature ->
                 val md = MessageDigest.getInstance("SHA-1")
                 md.update(signature.toByteArray())

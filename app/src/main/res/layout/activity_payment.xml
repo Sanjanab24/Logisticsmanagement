@@ -1,67 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="20dp"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/dark_bg"
+    android:fillViewport="true">
 
-    <TextView
-        android:text="Payment"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"/>
-
-    <TextView
-        android:id="@+id/amountText"
-        android:text="Amount: ₹0"
-        android:textSize="18sp"
-        android:layout_marginTop="16dp"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        />
-
-    <RadioGroup
-        android:id="@+id/paymentGroup"
-        android:layout_marginTop="20dp"
-        android:layout_height="wrap_content" 
-        android:layout_width="wrap_content">
-
-        <RadioButton android:text="UPI" 
-            android:layout_height="wrap_content"
-             android:layout_width="wrap_content"/>
-        <RadioButton android:text="Card"
-             android:layout_height="wrap_content"
-             android:layout_width="wrap_content"/>
-        <RadioButton android:text="Cash on Delivery" 
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"/>
-
-    </RadioGroup>
-
-    <Button
-        android:id="@+id/payBtn"
-        android:text="Pay Now"
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <ProgressBar
-        android:id="@+id/paymentProgress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        android:visibility="gone"/>
-
-    <TextView
-        android:id="@+id/paymentStatusText"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:textSize="14sp"
-        android:textColor="#555555"
-        android:gravity="center"
-        android:visibility="gone"/>
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
 
-</LinearLayout>
+        <!-- Title -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Checkout"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="@color/dark_text_primary"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choose your payment method"
+            android:textSize="14sp"
+            android:textColor="@color/dark_text_secondary"
+            android:layout_marginBottom="32dp" />
+
+        <!-- Amount card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_card"
+            android:padding="20dp"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="28dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TOTAL AMOUNT"
+                android:textSize="11sp"
+                android:letterSpacing="0.1"
+                android:textColor="@color/dark_text_secondary"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/amountText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="₹0"
+                android:textSize="42sp"
+                android:textStyle="bold"
+                android:textColor="@color/accent_red" />
+        </LinearLayout>
+
+        <!-- Payment method label -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="PAYMENT METHOD"
+            android:textSize="11sp"
+            android:letterSpacing="0.1"
+            android:textColor="@color/dark_text_secondary"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Radio group styled as cards -->
+        <RadioGroup
+            android:id="@+id/paymentGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="28dp">
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:text="⚡  UPI Payment"
+                android:textColor="@color/dark_text_primary"
+                android:textSize="15sp"
+                android:background="@drawable/bg_radio_option"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="10dp"
+                android:buttonTint="@color/accent_red" />
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:text="💳  Card Payment"
+                android:textColor="@color/dark_text_primary"
+                android:textSize="15sp"
+                android:background="@drawable/bg_radio_option"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="10dp"
+                android:buttonTint="@color/accent_red" />
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:text="🚚  Cash on Delivery"
+                android:textColor="@color/dark_text_primary"
+                android:textSize="15sp"
+                android:background="@drawable/bg_radio_option"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:gravity="center_vertical"
+                android:buttonTint="@color/accent_red" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/payBtn"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:text="PAY NOW →"
+            android:textColor="@color/white"
+            android:letterSpacing="0.08"
+            android:textStyle="bold"
+            android:background="@drawable/bg_button_red"
+            android:layout_marginBottom="16dp" />
+
+        <ProgressBar
+            android:id="@+id/paymentProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateTint="@color/accent_red"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/paymentStatusText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textSize="14sp"
+            android:textColor="@color/dark_text_secondary"
+            android:gravity="center"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</ScrollView>
