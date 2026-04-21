@@ -30,12 +30,14 @@ class ChatAdapter(private val messages: List<AiMessage>) :
 
         if (message.role == "user") {
             holder.messageContainer.gravity = Gravity.END
-            holder.bubble.setBackgroundResource(R.drawable.bg_button_red)
-            holder.messageText.setTextColor(holder.itemView.context.getColor(R.color.white))
+            holder.bubble.setPadding(0, 0, 0, 0)
+            holder.messageText.setTextColor(holder.itemView.context.getColor(R.color.accent_red))
+            holder.messageText.textAlignment = View.TEXT_ALIGNMENT_TEXT_END
         } else {
             holder.messageContainer.gravity = Gravity.START
-            holder.bubble.setBackgroundResource(R.drawable.bg_card)
+            holder.bubble.setPadding(0, 0, 0, 0)
             holder.messageText.setTextColor(holder.itemView.context.getColor(R.color.dark_text_primary))
+            holder.messageText.textAlignment = View.TEXT_ALIGNMENT_TEXT_START
         }
     }
 

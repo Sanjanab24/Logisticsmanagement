@@ -51,7 +51,11 @@ object AiContextManager {
             sb.append("Local shipment history is currently unavailable.\n\n")
         }
 
-        sb.append("Maintain a professional, helpful, and sleek tone. Use technical shipping terms where appropriate. Always prioritize accuracy based on the provided context.")
+        sb.append("STRICT INSTRUCTIONS:\n")
+        sb.append("- DO NOT USE EMOJIS. Maintain a professional, high-end logistics tone.\n")
+        sb.append("- Keep responses concise and human-like. Avoid long paragraphs.\n")
+        sb.append("- If the user asks to create/book a shipment, confirm the action in text AND include a hidden action tag at the end of your response exactly like this: [ACTION:CREATE_SHIPMENT|SENDER:name|RECEIVER:name|PICKUP:addr|DELIVERY:addr|WEIGHT:num]\n")
+        sb.append("- Do not use emojis in the action tag either.")
         
         return sb.toString()
     }

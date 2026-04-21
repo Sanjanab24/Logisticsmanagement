@@ -54,66 +54,84 @@
         </LinearLayout>
 
         <!-- Quick Actions -->
-        <LinearLayout
-            android:orientation="horizontal"
+        <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="8dp">
+            android:paddingHorizontal="12dp"
+            android:paddingBottom="8dp"
+            android:columnCount="3"
+            android:rowCount="2">
 
+            <!-- Create -->
             <LinearLayout
                 android:id="@+id/createShipmentBtn"
                 android:layout_width="0dp"
                 android:layout_height="80dp"
-                android:layout_weight="1"
+                android:layout_columnWeight="1"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:background="@drawable/bg_card"
+                android:background="@drawable/bg_card_sleek"
                 android:layout_margin="4dp">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📦" android:textSize="20sp"/>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Create" android:textSize="12sp" android:textColor="@color/dark_text_secondary" android:layout_marginTop="4dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="NEW" android:textSize="12sp" android:textStyle="bold" android:textColor="@color/accent_red" android:letterSpacing="0.1"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Shipment" android:textSize="11sp" android:textColor="@color/dark_text_secondary" />
             </LinearLayout>
 
+            <!-- Shipments (NEW) -->
+            <LinearLayout
+                android:id="@+id/shipmentsBtn"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/bg_card_sleek"
+                android:layout_margin="4dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="LIST" android:textSize="12sp" android:textStyle="bold" android:textColor="@color/accent_red" android:letterSpacing="0.1"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Manage" android:textSize="11sp" android:textColor="@color/dark_text_secondary" />
+            </LinearLayout>
+
+            <!-- Track -->
             <LinearLayout
                 android:id="@+id/trackBtn"
                 android:layout_width="0dp"
                 android:layout_height="80dp"
-                android:layout_weight="1"
+                android:layout_columnWeight="1"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:background="@drawable/bg_card"
+                android:background="@drawable/bg_card_sleek"
                 android:layout_margin="4dp">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🔍" android:textSize="20sp"/>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Track" android:textSize="12sp" android:textColor="@color/dark_text_secondary" android:layout_marginTop="4dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="FIND" android:textSize="12sp" android:textStyle="bold" android:textColor="@color/accent_red" android:letterSpacing="0.1"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tracking" android:textSize="11sp" android:textColor="@color/dark_text_secondary" />
             </LinearLayout>
 
+            <!-- Orders -->
             <LinearLayout
                 android:id="@+id/ordersBtn"
                 android:layout_width="0dp"
                 android:layout_height="80dp"
-                android:layout_weight="1"
+                android:layout_columnWeight="1"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:background="@drawable/bg_card"
+                android:background="@drawable/bg_card_sleek"
                 android:layout_margin="4dp">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🛍️" android:textSize="20sp"/>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Orders" android:textSize="12sp" android:textColor="@color/dark_text_secondary" android:layout_marginTop="4dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CART" android:textSize="12sp" android:textStyle="bold" android:textColor="@color/accent_red" android:letterSpacing="0.1"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Inventory" android:textSize="11sp" android:textColor="@color/dark_text_secondary" />
             </LinearLayout>
 
+            <!-- Profile -->
             <LinearLayout
                 android:id="@+id/profileBtn"
                 android:layout_width="0dp"
                 android:layout_height="80dp"
-                android:layout_weight="1"
+                android:layout_columnWeight="1"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:background="@drawable/bg_card"
+                android:background="@drawable/bg_card_sleek"
                 android:layout_margin="4dp">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="👤" android:textSize="20sp"/>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Profile" android:textSize="12sp" android:textColor="@color/dark_text_secondary" android:layout_marginTop="4dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="USER" android:textSize="12sp" android:textStyle="bold" android:textColor="@color/accent_red" android:letterSpacing="0.1"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Profile" android:textSize="11sp" android:textColor="@color/dark_text_secondary" />
             </LinearLayout>
-        </LinearLayout>
+        </GridLayout>
 
         <!-- Catalog label -->
         <LinearLayout

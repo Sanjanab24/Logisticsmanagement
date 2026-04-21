@@ -20,6 +20,7 @@ class DashboardActivity : AppCompatActivity() {
         setContentView(R.layout.activity_dashboard)
 
         val createBtn   = findViewById<LinearLayout>(R.id.createShipmentBtn)
+        val shipmentsBtn = findViewById<LinearLayout>(R.id.shipmentsBtn)
         val trackBtn    = findViewById<LinearLayout>(R.id.trackBtn)
         val ordersBtn   = findViewById<LinearLayout>(R.id.ordersBtn)
         val profileBtn  = findViewById<LinearLayout>(R.id.profileBtn)
@@ -32,9 +33,9 @@ class DashboardActivity : AppCompatActivity() {
         // Greeting based on time of day
         val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
         greeting.text = when {
-            hour < 12 -> "Good morning 👋"
-            hour < 17 -> "Good afternoon 👋"
-            else -> "Good evening 👋"
+            hour < 12 -> "Good morning"
+            hour < 17 -> "Good afternoon"
+            else -> "Good evening"
         }
 
         // Theme toggle
@@ -43,10 +44,11 @@ class DashboardActivity : AppCompatActivity() {
             recreate()
         }
 
-        createBtn.setOnClickListener  { startActivity(Intent(this, CreateShipmentActivity::class.java)) }
-        trackBtn.setOnClickListener   { startActivity(Intent(this, TrackShipmentActivity::class.java)) }
-        ordersBtn.setOnClickListener  { startActivity(Intent(this, OrdersActivity::class.java)) }
-        profileBtn.setOnClickListener { startActivity(Intent(this, ProfileActivity::class.java)) }
+        createBtn.setOnClickListener    { startActivity(Intent(this, CreateShipmentActivity::class.java)) }
+        shipmentsBtn.setOnClickListener { startActivity(Intent(this, ShipmentsActivity::class.java)) }
+        trackBtn.setOnClickListener     { startActivity(Intent(this, TrackShipmentActivity::class.java)) }
+        ordersBtn.setOnClickListener    { startActivity(Intent(this, OrdersActivity::class.java)) }
+        profileBtn.setOnClickListener   { startActivity(Intent(this, ProfileActivity::class.java)) }
         
         findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(R.id.aiAssistantFab).setOnClickListener {
             startActivity(Intent(this, AiAssistantActivity::class.java))

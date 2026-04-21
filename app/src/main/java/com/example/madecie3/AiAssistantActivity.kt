@@ -11,7 +11,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.madecie3.ai.*
+import com.example.madecie3.data.AppDatabase
+import com.example.madecie3.data.ShipmentEntity
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
 
 class AiAssistantActivity : AppCompatActivity() {
 
@@ -19,6 +22,8 @@ class AiAssistantActivity : AppCompatActivity() {
     private lateinit var adapter: ChatAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var statusText: TextView
+    private var thinkingJob: kotlinx.coroutines.Job? = null
+    private val thinkingTerms = listOf("Skiddadling", "Thinking", "Spooking", "Shenanging")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         ThemeUtils.applyTheme(this)
@@ -28,14 +33,14 @@ class AiAssistantActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.chatRecyclerView)
         statusText   = findViewById(R.id.chatStatus)
         val input    = findViewById<EditText>(R.id.messageInput)
-        val sendBtn  = findViewById<ImageButton>(R.id.sendBtn)
+        val sendBtn  = findViewById<TextView>(R.id.sendBtn)
 
         adapter = ChatAdapter(messages)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
-        // Initial welcome message
-        addMessage(AiMessage("assistant", "Hello! I am your Logistics Assistant. Ask me about your shipments, rates, or available products."))
+        // Initial welcome message (Emoji-free)
+        addMessage(AiMessage("assistant", "Hello. I am your Logistics Concierge. How may I assist you today?"))
 
         sendBtn.setOnClickListener {
             val query = input.text.toString().trim()
@@ -49,8 +54,7 @@ class AiAssistantActivity : AppCompatActivity() {
     private fun handleQuery(query: String) {
         addMessage(AiMessage("user", query))
         
-        statusText.text = "Thinking..."
-        statusText.setTextColor(getColor(R.color.accent_red))
+        startThinkingAnimation()
 
         lifecycleScope.launch {
             try {
@@ -60,7 +64,13 @@ class AiAssistantActivity : AppCompatActivity() {
                 // 2. Prepare request (System context + all history)
                 val conversation = mutableListOf<AiMessage>()
                 conversation.add(AiMessage("system", systemPrompt))
-                conversation.addAll(messages)
+                
+                // Ensure conversation starts with 'user' and skip previous errors
+                val historyToSend = messages
+                    .filter { !it.content.startsWith("Error:") }
+                    .dropWhile { it.role != "user" }
+                    
+                conversation.addAll(historyToSend)
 
                 val request = AiRequest(messages = conversation)
 
@@ -69,15 +79,20 @@ class AiAssistantActivity : AppCompatActivity() {
 
                 if (response.isSuccessful && response.body() != null) {
                     val aiReply = response.body()!!.choices.firstOrNull()?.message?.content ?: "I'm sorry, I couldn't process that."
-                    addMessage(AiMessage("assistant", aiReply))
+                    
+                    // Clean reply for UI (remove action tags)
+                    val cleanReply = aiReply.replace("\\[ACTION:.*?\\]".toRegex(), "").trim()
+                    addMessage(AiMessage("assistant", cleanReply))
+                    
+                    // Process any background actions
+                    parseAndExecuteAction(aiReply)
                 } else {
                     addMessage(AiMessage("assistant", "Error: ${response.code()} - ${response.message()}"))
                 }
             } catch (e: Exception) {
                 addMessage(AiMessage("assistant", "Network failure: ${e.localizedMessage}"))
             } finally {
-                statusText.text = "Online"
-                statusText.setTextColor(getColor(R.color.color_success))
+                stopThinkingAnimation()
             }
         }
     }
@@ -86,5 +101,55 @@ class AiAssistantActivity : AppCompatActivity() {
         messages.add(message)
         adapter.notifyItemInserted(messages.size - 1)
         recyclerView.scrollToPosition(messages.size - 1)
+    }
+
+    private fun startThinkingAnimation() {
+        thinkingJob?.cancel()
+        thinkingJob = lifecycleScope.launch {
+            var index = 0
+            while (true) {
+                statusText.text = thinkingTerms[index]
+                statusText.setTextColor(getColor(R.color.accent_red))
+                index = (index + 1) % thinkingTerms.size
+                kotlinx.coroutines.delay(1200)
+            }
+        }
+    }
+
+    private fun stopThinkingAnimation() {
+        thinkingJob?.cancel()
+        statusText.text = "Online"
+        statusText.setTextColor(getColor(R.color.color_success))
+    }
+
+    private fun parseAndExecuteAction(reply: String) {
+        val pattern = "\\[ACTION:CREATE_SHIPMENT\\|SENDER:(.*?)\\|RECEIVER:(.*?)\\|PICKUP:(.*?)\\|DELIVERY:(.*?)\\|WEIGHT:(.*?)\\]".toRegex()
+        val match = pattern.find(reply)
+        if (match != null) {
+            val sender = match.groups[1]?.value ?: "AI Request"
+            val receiver = match.groups[2]?.value ?: "AI Request"
+            val pickup = match.groups[3]?.value ?: "N/A"
+            val delivery = match.groups[4]?.value ?: "N/A"
+            val weightStr = match.groups[5]?.value ?: "1.0"
+            val weight = weightStr.toDoubleOrNull() ?: 1.0
+            
+            val trackingId = "TRKAI${(10000..99999).random()}"
+            val cost = (weight * 50).toInt()
+
+            lifecycleScope.launch(Dispatchers.IO) {
+                val db = AppDatabase.getDatabase(this@AiAssistantActivity)
+                val shipment = ShipmentEntity(
+                    sender = sender,
+                    receiver = receiver,
+                    pickupAddress = pickup,
+                    deliveryAddress = delivery,
+                    weight = weight,
+                    cost = cost,
+                    trackingId = trackingId,
+                    paymentMethod = "AI Managed"
+                )
+                db.shipmentDao().insertShipment(shipment)
+            }
+        }
     }
 }
