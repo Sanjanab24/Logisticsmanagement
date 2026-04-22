@@ -69,8 +69,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="📸"
-                    android:textSize="32sp" />
+                    android:text="PACKAGE PHOTO"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.1"
+                    android:textColor="@color/dark_text_secondary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -157,7 +160,7 @@
             android:id="@+id/proceedPaymentBtn"
             android:layout_width="match_parent"
             android:layout_height="54dp"
-            android:text="PROCEED TO PAYMENT →"
+            android:text="PROCEED TO PAYMENT"
             android:textColor="@color/white"
             android:letterSpacing="0.06"
             android:textStyle="bold"

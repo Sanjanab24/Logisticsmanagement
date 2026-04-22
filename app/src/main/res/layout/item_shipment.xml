@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/bg_card_industrial">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/shipmentTrackingId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="TRK123456"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:fontFamily="monospace"
+            android:letterSpacing="0.05" />
+
+        <TextView
+            android:id="@+id/shipmentCost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="₹2500"
+            android:textColor="@color/emerald_500"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:fontFamily="monospace" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/shipmentSender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BOM"
+            android:textColor="@color/slate_400"
+            android:textSize="12sp"
+            android:textAllCaps="true"
+            android:fontFamily="monospace" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" -> "
+            android:textColor="@color/slate_400"
+            android:textSize="11sp" />
+
+        <TextView
+            android:id="@+id/shipmentReceiver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BLR"
+            android:textColor="@color/slate_400"
+            android:textSize="12sp"
+            android:textAllCaps="true"
+            android:fontFamily="monospace" />
+
+        <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/shipmentWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5.0 KG"
+            android:textColor="@color/slate_500"
+            android:textSize="10sp"
+            android:textAllCaps="true"
+            android:fontFamily="monospace" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/shipmentDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="APR 21, 2026"
+        android:textColor="@color/slate_500"
+        android:textSize="9sp"
+        android:textAllCaps="true"
+        android:fontFamily="monospace" />
+
+</LinearLayout>

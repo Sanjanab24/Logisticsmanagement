@@ -3,71 +3,101 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/dark_bg">
+    android:background="@color/zinc_950">
 
-    <!-- Header -->
+    <!-- Terminal Header -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="12dp"
         android:gravity="center_vertical"
-        android:background="@color/dark_surface">
+        android:background="@color/zinc_900">
         
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Logistics AI Assistant"
-            android:textColor="@color/dark_text_primary"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:text="CONCIERGE_AI.EXE"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:fontFamily="monospace"
+            android:letterSpacing="0.1" />
 
         <TextView
             android:id="@+id/chatStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Online"
+            android:text="ONLINE"
             android:textColor="@color/color_success"
-            android:textSize="12sp" />
+            android:textSize="9sp"
+            android:fontFamily="monospace"
+            android:letterSpacing="0.05" />
     </LinearLayout>
 
-    <!-- Chat Messages -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/zinc_800" />
+
+    <!-- Chat Content (Terminal feed) -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="16dp"
+        android:padding="20dp"
         android:clipToPadding="false" />
 
-    <!-- Input Area -->
+    <!-- Terminal Input -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/zinc_800" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp"
-        android:background="@color/dark_surface">
+        android:padding="20dp"
+        android:background="@color/zinc_900">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="> "
+            android:textColor="@color/accent_red"
+            android:textSize="15sp"
+            android:fontFamily="monospace"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/messageInput"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Ask about your shipments..."
-            android:textColorHint="@color/dark_text_secondary"
-            android:textColor="@color/dark_text_primary"
-            android:background="@drawable/bg_input_field"
-            android:padding="12dp"
-            android:maxLines="3" />
+            android:hint="input_query..."
+            android:textColorHint="@color/slate_500"
+            android:textColor="@color/white"
+            android:background="#00000000"
+            android:paddingVertical="8dp"
+            android:maxLines="4"
+            android:textSize="14sp"
+            android:fontFamily="monospace" />
 
-        <ImageButton
+        <TextView
             android:id="@+id/sendBtn"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="12dp"
-            android:src="@android:drawable/ic_menu_send"
-            android:background="@drawable/bg_button_red"
-            android:tint="@color/white" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:text="EXECUTE"
+            android:textColor="@color/accent_red"
+            android:textStyle="bold"
+            android:textSize="11sp"
+            android:fontFamily="monospace"
+            android:letterSpacing="0.1" />
     </LinearLayout>
 
 </LinearLayout>
